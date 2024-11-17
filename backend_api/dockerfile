@@ -1,0 +1,9 @@
+FROM python:latest
+
+WORKDIR /app
+
+RUN pip install flask mysql-connector-python
+
+COPY . .
+
+CMD ["python", "App.py"]
