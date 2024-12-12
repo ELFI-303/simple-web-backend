@@ -1,34 +1,48 @@
 services:
   back:
     build: ./backend_api/
+    container_name: imt-transition-back-api-python
+    restart: always
     depends_on:
-      - ${mysqlHost}
-    command: sh -c "sleep 10s ; python3 ./app.py"
+      - mysql
+    command: sh -c "sleep 20s ; python3 ./app.py"
     environment:
-      - mysqlDb=${mysqlDb}
-      - mysqlUn=${mysqlUn}
-      - mysqlRp=${mysqlRp}
-      - mysqlPort=${mysqlPort}
-      - mysqlHost=${mysqlHost}
-      - port=${port}
-      - host=${host}
+      - mysqlDb=db
+      - mysqlUn=root
+      - mysqlRp=12345678
+      - mysqlPort=3306
+      - mysqlHost=mysql-imt-transition-database
+      - port=5000
+      - host=0.0.0.0
+      - sendMail=imtransition.mail.sender@gmail.com
+      - sendPass=
+      - receiver=elouan.filleau.fronville@gmail.com
     ports:
-      - '${port}:${port}'
+      - '5000:5000'
+      
   mysql:
     build: ./db_config/
+    container_name: mysql-imt-transition-database
     restart: always
     environment:
-      MYSQL_DATABASE: ${mysqlDb}
-      MYSQL_ROOT_PASSWORD: ${mysqlRp}
+      MYSQL_DATABASE: db
+      MYSQL_ROOT_PASSWORD: 12345678
     ports:
-      - '${mysqlPort}:${mysqlPort}'
+      - '3306:3306'
+    volumes:
+      - mysql-database:/var/lib/mysql
+
   phpmyadmin:
     image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin-imt-transition-access
     restart: always
     depends_on:
-      - ${mysqlHost}
+      - mysql
     environment:
-      PMA_HOST: ${mysqlHost}
-      MYSQL_ROOT_PASSWORD: ${mysqlRp}
+      PMA_HOST: mysql-imt-transition-database
+      MYSQL_ROOT_PASSWORD: 12345678
     ports:
-      - '${phpPort}'
+      - '8080:80'
+
+volumes:
+  mysql-database:

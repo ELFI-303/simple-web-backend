@@ -3,3 +3,4 @@ dockerfile
 */dockerfile
 .env
 db_config/*
+conf.txt

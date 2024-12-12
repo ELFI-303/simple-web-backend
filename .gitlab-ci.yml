@@ -1,0 +1,20 @@
+stages:
+  - backup
+  - run
+  
+run:
+  script:
+      - docker compose up --build
+  tags:
+    - docker
+
+backup:
+  script:
+    - mkdir -p backups
+    - docker exec ${mysqlHost} mysqldump -u ${mysqlUn} -p ${mysqlRp} events_incomming > backups/db_backup_$(date +%Y%m%d%H%M%S).sql
+  artifacts:
+    paths:
+      - backups/
+    expire_in: 1 month
+  tags:
+    - docker

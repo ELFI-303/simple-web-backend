@@ -1,12 +1,13 @@
-class Event:
-    def __init__(self, id: int, title: str, description: str, date: str, place: str, url_img: str, link: str) -> None:
+class Project:
+    def __init__(self, id: int, title: str, description: str, date: str, place: str, img_url: str, link: str, equipe: str) -> None:
         self.id = id
         self.title = title
         self.description = description
         self.date = date
         self.place = place
-        self.url_img = url_img
+        self.img_url = img_url
         self.link = link
+        self.equipe = equipe.split(",")
 
     def to_dict(self):
         return {
@@ -15,6 +16,7 @@ class Event:
             "description": self.description,
             "date": self.date,
             "place": self.place,
-            "url_img": self.url_img,
-            "link": self.link
+            "img_url": self.img_url,
+            "link": self.link,
+            "equipe": self.equipe
         }

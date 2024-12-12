@@ -2,7 +2,7 @@ FROM python:latest
 
 WORKDIR /app
 
-RUN pip install flask mysql-connector-python
+RUN pip install flask mysql-connector-python sentry-sdk[flask] dateutils
 
 COPY . .
 
